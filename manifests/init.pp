@@ -1,5 +1,6 @@
 class abrt (
     $active = true,
+    $detailedmailsubject = false,
     $maxcrashreportssize = '1000',
     $dumplocation = '/var/spool/abrt',
     $deleteuploaded = 'no',
@@ -95,4 +96,14 @@ class abrt (
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
+  if ($detailedmailsubject) {
+    file { '/etc/libreport/events.d/abrt_event.conf':
+      ensure => present,
+      owner   => root,
+      group   => root,
+      content => template("${module_name}/abrt_event.conf.erb"),
+      require => Package['abrt'],
+      notify => Service["abrtd"],
+    }
+  }
 }
