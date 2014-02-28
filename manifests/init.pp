@@ -1,4 +1,4 @@
-class abrt {
+class abrt (
     $active = true,
     $maxcrashreportssize = '1000',
     $dumplocation = '/var/spool/abrt',
