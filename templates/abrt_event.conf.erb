@@ -115,13 +115,13 @@ EVENT=post-create
 EVENT=post-create
         if test -f executable; then
           if test -f package; then
-            export Mailx_Subject="vb-tests-3.cern.ch [security/vbrillault] abrt crash report for `cat executable` [`cat package`]"
+            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]"
           else
-            export Mailx_Subject="vb-tests-3.cern.ch [security/vbrillault] abrt crash report for `cat executable`"
+            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`"
           fi
         elif test -f package; then
-           export Mailx_Subject="vb-tests-3.cern.ch [security/vbrillault] abrt crash report for [`cat package`]"
+           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]"
         else
-           export Mailx_Subject="vb-tests-3.cern.ch [security/vbrillault] abrt crash report"
+           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
         reporter-mailx --notify-only
