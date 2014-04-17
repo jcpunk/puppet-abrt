@@ -8,6 +8,10 @@ class abrt (
     $blacklist = ['nspluginwrapper', 'valgrind', 'strace', 'mono-core'],
     $blacklistedpaths = ['/usr/share/doc/*', '*/example*', '/usr/bin/nspluginviewer', '/usr/lib/xulrunner-*/plugin-container'],
     $processunpackaged = 'no',
+    $abrt_mailx_to = false,
+    $abrt_mailx_from = false,
+    $abrt_mailx_binary = false,
+    $abrt_sosreport = true
   ) {
 
   # Install Package

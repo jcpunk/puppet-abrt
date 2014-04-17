@@ -81,6 +81,7 @@ EVENT=notify_dup package!= uid=
     string:"`cat package`" string:"$DUMP_DIR"
 
 
+<% if @abrt_sosreport %>
 # Example: if you want to save sosreport immediately at the moment of a crash:
 # (alternatively, you can add similar command to EVENT=analyze_foo's,
 # if you would rather perform this collection later):
@@ -106,7 +107,7 @@ EVENT=post-create
         cat sosreport.log | sed 's/  *$//' | grep -v '^$'
         rm sosreport.log
         exit 1
-
+<% end %>
 
 # Example: if you want to upload data immediately at the moment of a crash:
 #EVENT=post-create
@@ -124,4 +125,7 @@ EVENT=post-create
         else
            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
+        <% if @abrt_mailx_from -%>export Mailx_EmailFrom=<%= @abrt_mailx_from<% end -%>
+        <% if @abrt_mailx_to -%>export Mailx_EmailTo=<%= @abrt_mailx_to<% end -%>
+        <% if @abrt_mailx_binary -%>export Mailx_SendBinaryData=<%= @abrt_mailx_binary<% end -%>
         reporter-mailx --notify-only
