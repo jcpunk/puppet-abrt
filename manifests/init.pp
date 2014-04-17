@@ -11,7 +11,8 @@ class abrt (
     $abrt_mailx_to = false,
     $abrt_mailx_from = false,
     $abrt_mailx_binary = false,
-    $abrt_sosreport = true
+    $abrt_sosreport = true,
+    $abrt_backtrace = false
   ) {
 
   # Install Package

@@ -80,6 +80,10 @@ EVENT=notify_dup package!= uid=
     dbus-send --system --type=signal /com/redhat/abrt com.redhat.abrt.Crash \
     string:"`cat package`" string:"$DUMP_DIR"
 
+<% if @abrt_backtrace %>
+EVENT=analyze analyzer=CCpp
+        abrt-action-generate-backtrace -t 60
+<% end %>
 
 <% if @abrt_sosreport %>
 # Example: if you want to save sosreport immediately at the moment of a crash:
@@ -125,7 +129,7 @@ EVENT=post-create
         else
            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
-        <% if @abrt_mailx_from -%>export Mailx_EmailFrom=<%= @abrt_mailx_from %><% end %>
-        <% if @abrt_mailx_to -%>export Mailx_EmailTo=<%= @abrt_mailx_to %><% end %>
-        <% if @abrt_mailx_binary -%>export Mailx_SendBinaryData=<%= @abrt_mailx_binary %><% end %>
+        <% if @abrt_mailx_from %>export Mailx_EmailFrom=<%= @abrt_mailx_from %><% end -%>
+        <% if @abrt_mailx_to %>export Mailx_EmailTo=<%= @abrt_mailx_to %><% end -%>
+        <% if @abrt_mailx_binary %>export Mailx_SendBinaryData=<%= @abrt_mailx_binary %><% end -%>
         reporter-mailx --notify-only
