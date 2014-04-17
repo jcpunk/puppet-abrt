@@ -107,7 +107,7 @@ EVENT=post-create
         cat sosreport.log | sed 's/  *$//' | grep -v '^$'
         rm sosreport.log
         exit 1
-<% end %>
+<% end -%>
 
 # Example: if you want to upload data immediately at the moment of a crash:
 #EVENT=post-create
@@ -125,7 +125,7 @@ EVENT=post-create
         else
            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
-        <% if @abrt_mailx_from -%>export Mailx_EmailFrom=<%= @abrt_mailx_from<% end -%>
-        <% if @abrt_mailx_to -%>export Mailx_EmailTo=<%= @abrt_mailx_to<% end -%>
-        <% if @abrt_mailx_binary -%>export Mailx_SendBinaryData=<%= @abrt_mailx_binary<% end -%>
+        <% if @abrt_mailx_from -%>export Mailx_EmailFrom=<%= @abrt_mailx_from %><% end -%>
+        <% if @abrt_mailx_to -%>export Mailx_EmailTo=<%= @abrt_mailx_to %><% end -%>
+        <% if @abrt_mailx_binary -%>export Mailx_SendBinaryData=<%= @abrt_mailx_binary %><% end -%>
         reporter-mailx --notify-only
