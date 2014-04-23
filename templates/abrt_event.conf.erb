@@ -127,7 +127,7 @@ EVENT=post-create
         cat sosreport.log | sed 's/  *$//' | grep -v '^$'
         rm sosreport.log
         exit 1
-<% else -%>        
+<% else -%>
 #  puppet 'abrt' module: sosreport generation was supressed
 <% end -%>
 
@@ -164,4 +164,3 @@ EVENT=post-create
 <% else -%>
 #  puppet 'abrt' module: mail sending was suppressed
 <% end -%>
-
