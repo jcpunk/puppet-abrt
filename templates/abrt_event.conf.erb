@@ -80,10 +80,26 @@ EVENT=notify_dup package!= uid=
     dbus-send --system --type=signal /com/redhat/abrt com.redhat.abrt.Crash \
     string:"`cat package`" string:"$DUMP_DIR"
 
-<% if @abrt_backtrace %>
-EVENT=analyze analyzer=CCpp
+<% if @abrt_backtrace -%>
+# puppet 'abrt' module: the "backtrace" file will be included in the mail, can have "full" (all threads,locals,disassembly) or "simple"
+EVENT=post-create analyzer=CCpp
+        exec=`cat executable`
+        if [ ! -x /usr/bin/gdb ] ; then logger -t abrtd "skipping backtrace for ${exec}: gdb is not installed" ; exit 0 ; fi
+        logger -t abrtd "looking for backtrace for $exec"
+<% if @abrt_backtrace == "full" -%>
         abrt-action-generate-backtrace -t 60
-<% end %>
+<% else -%>
+        gdb -quiet -batch -ex bt -core coredump -se "${exec}" 2>&1 </dev/null |
+            sed -e '/^Loaded/d' \
+                -e '/^Reading/d' \
+                -e '/^Symbols.already.loaded/d' \
+                -e '/Thread.debugging.using/d' \
+                -e '/^ *$/d' \
+                -e '/^warning/d' \
+                -e '/^done/d' \
+                -e '/New Thread/d'  > backtrace
+<% end -%>
+<% end -%>
 
 <% if @abrt_sosreport %>
 # Example: if you want to save sosreport immediately at the moment of a crash:
@@ -111,12 +127,18 @@ EVENT=post-create
         cat sosreport.log | sed 's/  *$//' | grep -v '^$'
         rm sosreport.log
         exit 1
+<% else -%>        
+#  puppet 'abrt' module: sosreport generation was supressed
 <% end -%>
 
 # Example: if you want to upload data immediately at the moment of a crash:
 #EVENT=post-create
      reporter-upload -u scp://user:password@server.name/var/spool/abrt-upload || :
 
+# Will send mails by default. Anything that should get included has to happen before this point.
+<% if @abrt_mail -%>
+<% if @detailedmailsubject -%>
+# puppet 'abrt' module: using custom mail subjects
 EVENT=post-create
         if test -f executable; then
           if test -f package; then
@@ -129,10 +151,17 @@ EVENT=post-create
         else
            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
-<% if @abrt_mailx_from   -%>        export Mailx_EmailFrom=<%= @abrt_mailx_from %>
-<% end -%>
-<% if @abrt_mailx_to     -%>        export Mailx_EmailTo=<%= @abrt_mailx_to %>
-<% end -%>
-<% if @abrt_mailx_binary -%>        export Mailx_SendBinaryData=<%= @abrt_mailx_binary %>
+        <%- if @abrt_mailx_from   -%>        export Mailx_EmailFrom=<%= @abrt_mailx_from %>
+        <%- end -%>
+        <%- if @abrt_mailx_to     -%>        export Mailx_EmailTo=<%= @abrt_mailx_to %>
+        <%- end -%>
+        <%- if @abrt_mailx_binary -%>        export Mailx_SendBinaryData=<%= @abrt_mailx_binary %>
+        <%- end -%>
+<% else -%>
+EVENT=post-create
 <% end -%>
         reporter-mailx --notify-only
+<% else -%>
+#  puppet 'abrt' module: mail sending was suppressed
+<% end -%>
+
