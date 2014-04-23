@@ -30,6 +30,7 @@ The default used are the Scientific Linux default values:
 
   class { 'abrt':
     active => true,
+    abrt_mail => true,
     maxcrashreportssize => '1000',
     dumplocation => '/var/spool/abrt',
     deleteuploaded => 'no',
@@ -38,3 +39,6 @@ The default used are the Scientific Linux default values:
     blacklistedpaths => ['/usr/share/doc/*', '*/example*', '/usr/bin/nspluginviewer', '/usr/lib/xulrunner-*/plugin-container'],
     processunpackaged => 'no',
   }
+
+Other variables allow to change mail Subject, To and From, to suppress the generation of "sosreports" and to trigger automatic
+backtrace generation on coredumps (in case gdb is installed).
