@@ -139,7 +139,7 @@ EVENT=post-create
 <% if @abrt_mail -%>
 # puppet 'abrt' module: using custom mail subjects
 EVENT=post-create
-    <%- if @detailedmailsubject -%>
+    <%- if (@abrt_mailx_detailed_subject || @detailedmailsubject) -%>
         if test -f executable; then
           if test -f package; then
             export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]"

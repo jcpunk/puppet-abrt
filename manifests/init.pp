@@ -1,7 +1,7 @@
 class abrt (
     $active = true,
     $abrt_mail = true,
-    $detailedmailsubject = false,
+    $detailedmailsubject = false,  # Obsolete
     $maxcrashreportssize = '1000',
     $dumplocation = '/var/spool/abrt',
     $deleteuploaded = 'no',
@@ -12,6 +12,7 @@ class abrt (
     $abrt_mailx_to = false,
     $abrt_mailx_from = false,
     $abrt_mailx_binary = false,
+    $abrt_mailx_detailed_subject = false,
     $abrt_sosreport = true,
     $abrt_backtrace = false    # or "full", or "simple"
   ) {
