@@ -106,7 +106,7 @@ class abrt (
     ensure => present,
     owner   => root,
     group   => root,
-      content => template("${module_name}/abrt_event.conf.erb"),
+    content => template("${module_name}/abrt_event.conf.erb"),
     require => Package['abrt'],
     notify => Service["abrtd"],
   }
