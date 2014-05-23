@@ -1,7 +1,7 @@
 ## abrt module
 
 This is the abrt module.
-It can be used to maintain both the abrt daemon an libreport
+It can be used to maintain both the abrt daemon and libreport.
 
 ### Basic usage
 
@@ -28,7 +28,7 @@ The abrt module supports all configuration options in the following files:
 - abrt.conf
 - abrt-action-save-package-data.conf
 
-The default used are the Scientific Linux default values:
+The defaults used are the Scientific Linux default values:
 ```puppet
   class { 'abrt':
     active => true,
