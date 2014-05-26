@@ -1,0 +1,31 @@
+{
+  "source": "https://github.com/cernops/puppet-abtr",
+  "version": "0.1.0",
+  "name": "CERNOps-abrt",
+  "project_page": "https://github.com/cernops/puppet-abtr",
+  "summary": "Configuring abrt (Daemon monitoring crashes)",
+  "description": "Configuring abrt (Daemon monitoring crashes)",
+  "types": [
+
+  ],
+  "dependencies": [
+    {
+      "version_requirement": ">= 3.0.0",
+      "name": "puppetlabs/stdlib"
+    },
+    {
+      "version_requirement": ">= 1.0.0",
+      "name": "puppetlabs/inifile"
+    }
+  ],
+  "checksums": {
+    "README.md": "53a130d1d5b44d5fe7102b6f6ac2968f",
+    "manifests/init.pp": "02da263e6dc5d3c282dfe002b6d3934b",
+    "Modulefile": "983ac66ce1d88a527dd5c73b2736a306",
+    "templates/abrt_event.conf.erb": "6d7d13d213e5e381db05c3dcf74643f6",
+    "CHANGELOG": "7606aac6711bee12b8a625c67153a984",
+    "LICENCE": "5edd998b4e24ff934dc1b91e50f6bd55"
+  },
+  "author": "CERNOps",
+  "license": "GNU General Public License, Version 3"
+}
