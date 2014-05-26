@@ -1,4 +1,4 @@
-name	'abrt'
+name	'CERNOps-abrt'
 version '0.1.0'
 source 'https://github.com/cernops/puppet-abtr'
 author 'CERNOps'
