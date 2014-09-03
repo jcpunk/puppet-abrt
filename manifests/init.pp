@@ -17,9 +17,14 @@ class abrt (
     $abrt_backtrace = false    # or "full", or "simple"
   ) {
 
-  # Install Package
-  package { 'abrt':
-    ensure => present,
+  # Install Packages
+  ensure_packages(['abrt',
+                   'abrt-addon-ccpp',
+                   'abrt-addon-kerneloops',
+                   'abrt-addon-python',
+                  ])
+  if ($abrt_mail) {
+    ensure_packages(['libreport-plugin-mailx'])
   }
 
   # Have service running (or not)
@@ -27,13 +32,13 @@ class abrt (
     service { ['abrtd','abrt-oops','abrt-ccpp']:
       ensure => running,
       enable => true,
-      require => Package['abrt'],
+      require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
   } else {
     service { ['abrtd','abrt-oops','abrt-ccpp']:
       ensure => stopped,
       enable => false,
-      require => Package['abrt'],
+      require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
   }
 
