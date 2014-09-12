@@ -5,15 +5,29 @@ EVENT=post-create
     <%- if (@abrt_mailx_detailed_subject || @detailedmailsubject) -%>
         if test -f executable; then
           if test -f package; then
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]"
+            echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]" > mail_subject
           else
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`"
+            echo Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`" > mail_subject
           fi
         elif test -f package; then
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]"
+           echo Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]" > mail_subject
         fi
     <%- end -%>
+
+EVENT=notify
+        if test -f mail_subject; then
+          export Mailx_Subject="$(cat mail_subject)"
+        fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+
+EVENT=notify-dup
+        if test -f mail_subject; then
+          export Mailx_Subject="$(cat mail_subject)"
+        fi
+        reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+
+EVENT=report_Mailx
+        reporter-mailx
 <% else -%>
 #  puppet 'abrt' module: mail sending was suppressed
 <% end -%>
