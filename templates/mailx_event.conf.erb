@@ -11,20 +11,9 @@ EVENT=post-create
           fi
         elif test -f package; then
            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]"
-        else
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
         fi
     <%- end -%>
-    <%- if @abrt_mailx_from   -%>
-        export Mailx_EmailFrom=<%= @abrt_mailx_from %>
-    <%- end -%>
-    <%- if @abrt_mailx_to     -%>
-        export Mailx_EmailTo=<%= @abrt_mailx_to %>
-    <%- end -%>
-    <%- if @abrt_mailx_binary -%>
-        export Mailx_SendBinaryData=<%= @abrt_mailx_binary %>
-    <%- end -%>
-        reporter-mailx --notify-only
+        reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
 <% else -%>
 #  puppet 'abrt' module: mail sending was suppressed
 <% end -%>

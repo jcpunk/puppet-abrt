@@ -125,4 +125,13 @@ class abrt (
     require => Package['abrt'],
     notify => Service["abrtd"],
   }
+
+  file { '/etc/libreport/plugins/mailx.conf':
+    ensure => present,
+    owner   => root,
+    group   => root,
+    content => template("${module_name}/mailx.conf.erb"),
+    require => Package['abrt'],
+    notify => Service["abrtd"],
+  }
 }
