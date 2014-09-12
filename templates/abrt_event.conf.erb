@@ -134,34 +134,3 @@ EVENT=post-create
 # Example: if you want to upload data immediately at the moment of a crash:
 #EVENT=post-create
      reporter-upload -u scp://user:password@server.name/var/spool/abrt-upload || :
-
-# Will send mails by default. Anything that should get included has to happen before this point.
-<% if @abrt_mail -%>
-# puppet 'abrt' module: using custom mail subjects
-EVENT=post-create
-    <%- if (@abrt_mailx_detailed_subject || @detailedmailsubject) -%>
-        if test -f executable; then
-          if test -f package; then
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]"
-          else
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`"
-          fi
-        elif test -f package; then
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]"
-        else
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
-        fi
-    <%- end -%>
-    <%- if @abrt_mailx_from   -%>
-        export Mailx_EmailFrom=<%= @abrt_mailx_from %>
-    <%- end -%>
-    <%- if @abrt_mailx_to     -%>
-        export Mailx_EmailTo=<%= @abrt_mailx_to %>
-    <%- end -%>
-    <%- if @abrt_mailx_binary -%>
-        export Mailx_SendBinaryData=<%= @abrt_mailx_binary %>
-    <%- end -%>
-        reporter-mailx --notify-only
-<% else -%>
-#  puppet 'abrt' module: mail sending was suppressed
-<% end -%>

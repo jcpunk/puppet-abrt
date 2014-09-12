@@ -116,4 +116,13 @@ class abrt (
     require => Package['abrt'],
     notify => Service["abrtd"],
   }
+
+  file { '/etc/libreport/events.d/mailx_event.conf':
+    ensure => present,
+    owner   => root,
+    group   => root,
+    content => template("${module_name}/mailx_event.conf.erb"),
+    require => Package['abrt'],
+    notify => Service["abrtd"],
+  }
 }
