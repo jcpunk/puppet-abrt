@@ -20,11 +20,13 @@ EVENT=notify
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
 
+<%- if @abrt_duplicate -%>
 EVENT=notify-dup
         if test -f mail_subject; then
           export Mailx_Subject="$(cat mail_subject)"
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+<%- end -%>
 
 EVENT=report_Mailx
         reporter-mailx

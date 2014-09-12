@@ -14,6 +14,7 @@ class abrt (
     $abrt_mailx_binary = false,
     $abrt_mailx_detailed_subject = false,
     $abrt_sosreport = true,
+    $abrt_duplicate = true,
     $abrt_backtrace = false    # or "full", or "simple"
   ) {
 

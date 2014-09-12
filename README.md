@@ -49,4 +49,5 @@ Other variables allow to configure libreport:
 - **abrt_mailx_binary**: Set the binary option for mailx ('false' to enable defaults)
 - **abrt_mailx_detailed_subject**: Set a subject optimized for Puppet ('*fqdn* [*hostgroup*] abrt crash report for *program* [*package*]')
 - **abrt_sosreport**: Generate sosreport ([true]/false)
+- **abrt_duplicate**: Send notification for duplicated events ([true]/false)
 - **abrt_backtrace**: Control backtrace generation, requires gdb ([false]/full/simple)
