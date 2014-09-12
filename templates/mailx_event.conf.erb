@@ -17,6 +17,7 @@ EVENT=post-create
 EVENT=notify
         if test -f mail_subject; then
           export Mailx_Subject="$(cat mail_subject)"
+          rm mail_subject
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
 
@@ -24,6 +25,7 @@ EVENT=notify
 EVENT=notify-dup
         if test -f mail_subject; then
           export Mailx_Subject="$(cat mail_subject)"
+          rm mail_subject
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
 <%- end -%>
