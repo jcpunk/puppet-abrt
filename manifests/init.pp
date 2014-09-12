@@ -13,8 +13,8 @@ class abrt (
     $abrt_mailx_from = false,
     $abrt_mailx_binary = false,
     $abrt_mailx_detailed_subject = false,
+    $abrt_mailx_send_duplicate = true,
     $abrt_sosreport = true,
-    $abrt_duplicate = true,
     $abrt_backtrace = false    # or "full", or "simple"
   ) {
 
