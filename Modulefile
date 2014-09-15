@@ -1,5 +1,5 @@
 name	'abrt'
-version '0.1.0'
+version '0.2.0'
 source 'https://github.com/cernops/puppet-abtr'
 author 'CERNOps'
 license 'GNU General Public License, Version 3'
