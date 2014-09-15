@@ -83,7 +83,7 @@ EVENT=notify_dup package!= uid=
 <% if @abrt_backtrace -%>
 # puppet 'abrt' module: the "backtrace" file will be included in the mail, can have "full" (all threads,locals,disassembly) or "simple"
 EVENT=post-create analyzer=CCpp
-        exec=`cat executable`
+        export exec="$(cat executable)"
         if [ ! -x /usr/bin/gdb ] ; then logger -t abrtd "skipping backtrace for ${exec}: gdb is not installed" ; exit 0 ; fi
         logger -t abrtd "looking for backtrace for $exec"
 <% if @abrt_backtrace == "full" -%>
