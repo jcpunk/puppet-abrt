@@ -50,6 +50,7 @@ class abrt (
     section => '',
     setting => 'DumpLocation',
     value   => $dumplocation,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -59,6 +60,7 @@ class abrt (
     section => '',
     setting => 'MaxCrashReportsSize',
     value   => $maxcrashreportssize,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -68,6 +70,7 @@ class abrt (
     section => '',
     setting => 'DeleteUploaded',
     value   => $deleteuploaded,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -118,12 +121,18 @@ class abrt (
     notify => Service["abrtd"],
   }
 
+  if ($abrt_mail) {
+    $libreport_mail_requirement = [Package['abrt'], Package['libreport-plugin-mailx']]
+  } else {
+    $libreport_mail_requirement = Package['abrt']
+  }
+
   file { '/etc/libreport/events.d/mailx_event.conf':
     ensure => present,
     owner   => root,
     group   => root,
     content => template("${module_name}/mailx_event.conf.erb"),
-    require => Package['abrt'],
+    require => $libreport_mail_requirement,
     notify => Service["abrtd"],
   }
 
@@ -132,7 +141,7 @@ class abrt (
     owner   => root,
     group   => root,
     content => template("${module_name}/mailx.conf.erb"),
-    require => Package['abrt'],
+    require => $libreport_mail_requirement,
     notify => Service["abrtd"],
   }
 }
