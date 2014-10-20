@@ -7,10 +7,10 @@ EVENT=post-create
           if test -f package; then
             echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]" > mail_subject
           else
-            echo Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`" > mail_subject
+            echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`" > mail_subject
           fi
         elif test -f package; then
-           echo Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]" > mail_subject
+           echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]" > mail_subject
         fi
     <%- end -%>
 
