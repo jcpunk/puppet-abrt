@@ -7,7 +7,7 @@
 #
 # String parameters:
 <%- if @abrt_mailx_detailed_subject || @detailedmailsubject -%>
-Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
+Subject=<%= @fqdn %> [<%= @hostgroup %>] abrt crash report
 <%- else -%>
 # Subject=
 <%- end -%>
