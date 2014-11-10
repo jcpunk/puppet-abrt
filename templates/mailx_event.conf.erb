@@ -20,6 +20,9 @@ EVENT=notify
           rm mail_subject
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+        if test -n "${Mailx_Subject}"; then
+          echo "${Mailx_Subject}" > mail_subject
+        fi
 
 <%- if @abrt_mailx_send_duplicate -%>
 EVENT=notify-dup
@@ -28,6 +31,9 @@ EVENT=notify-dup
           rm mail_subject
         fi
         reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+        if test -n "${Mailx_Subject}"; then
+          echo "${Mailx_Subject}" > mail_subject
+        fi
 <%- end -%>
 
 EVENT=report_Mailx
