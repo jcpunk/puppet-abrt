@@ -2,7 +2,7 @@
   "source": "https://github.com/cernops/puppet-abtr",
   "version": "0.1.0",
   "name": "CERNOps-abrt",
-  "project_page": "https://github.com/cernops/puppet-abtr",
+  "project_page": "https://github.com/cernops/puppet-abrt",
   "summary": "Configuring abrt (Daemon monitoring crashes)",
   "description": "Configuring abrt (Daemon monitoring crashes)",
   "types": [
