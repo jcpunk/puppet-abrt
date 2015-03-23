@@ -35,6 +35,8 @@ class abrt (
       enable => true,
       require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
+    Service['abrtd'] -> Service['abrt-oops']
+    Service['abrtd'] -> Service['abrt-ccpp']
   } else {
     service { ['abrtd','abrt-oops','abrt-ccpp']:
       ensure => stopped,
