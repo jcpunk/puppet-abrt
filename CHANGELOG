@@ -1,7 +1,7 @@
-XXXX-XX-XX Vincent Brillault <vincent.brillault@cern.ch> - X.X.X
+2014-04-02 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.2
  * Add missing package requirements
  * Various fixes on extended mail subject
- * Update stdlib dependency
+ * Update metada files
 
 2014-09-15 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.1
  * Fix backtrace generation
