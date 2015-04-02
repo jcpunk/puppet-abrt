@@ -1,2 +1,15 @@
-2014-05-26 Vincent Brillault <vincent.brillault@cern.ch>
-  * 0.1.0 release
+XXXX-XX-XX Vincent Brillault <vincent.brillault@cern.ch> - X.X.X
+ * Add missing package requirements
+ * Various fixes on extended mail subject
+ * Update stdlib dependency
+
+2014-09-15 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.1
+ * Fix backtrace generation
+
+2014-09-15 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.0
+ * Ensure that required packages are installed
+ * Refactor mailx configuration (closer to upstream)
+ * New option: disable duplicate notification
+
+2014-05-26 Vincent Brillault <vincent.brillault@cern.ch> - 0.1.0
+ * Initial release
