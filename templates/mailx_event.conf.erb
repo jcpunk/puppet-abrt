@@ -1,0 +1,43 @@
+# Will send mails by default. Anything that should get included has to happen before this point.
+<% if @abrt_mail -%>
+# puppet 'abrt' module: using custom mail subjects
+<%- if (@abrt_mailx_detailed_subject || @detailedmailsubject) -%>
+EVENT=post-create
+        if test -f executable; then
+          if test -f package; then
+            echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]" > mail_subject
+          else
+            echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`" > mail_subject
+          fi
+        elif test -f package; then
+           echo "<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]" > mail_subject
+        fi
+<%- end -%>
+
+EVENT=notify
+        if test -f mail_subject; then
+          export Mailx_Subject="$(cat mail_subject)"
+          rm mail_subject
+        fi
+        reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+        if test -n "${Mailx_Subject}"; then
+          echo "${Mailx_Subject}" > mail_subject
+        fi
+
+<%- if @abrt_mailx_send_duplicate -%>
+EVENT=notify-dup
+        if test -f mail_subject; then
+          export Mailx_Subject="$(cat mail_subject)"
+          rm mail_subject
+        fi
+        reporter-mailx --notify-only -c /etc/libreport/plugins/mailx.conf
+        if test -n "${Mailx_Subject}"; then
+          echo "${Mailx_Subject}" > mail_subject
+        fi
+<%- end -%>
+
+EVENT=report_Mailx
+        reporter-mailx
+<% else -%>
+#  puppet 'abrt' module: mail sending was suppressed
+<% end -%>

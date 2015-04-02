@@ -83,7 +83,7 @@ EVENT=notify_dup package!= uid=
 <% if @abrt_backtrace -%>
 # puppet 'abrt' module: the "backtrace" file will be included in the mail, can have "full" (all threads,locals,disassembly) or "simple"
 EVENT=post-create analyzer=CCpp
-        exec=`cat executable`
+        export exec="$(cat executable)"
         if [ ! -x /usr/bin/gdb ] ; then logger -t abrtd "skipping backtrace for ${exec}: gdb is not installed" ; exit 0 ; fi
         logger -t abrtd "looking for backtrace for $exec"
 <% if @abrt_backtrace == "full" -%>
@@ -134,34 +134,3 @@ EVENT=post-create
 # Example: if you want to upload data immediately at the moment of a crash:
 #EVENT=post-create
      reporter-upload -u scp://user:password@server.name/var/spool/abrt-upload || :
-
-# Will send mails by default. Anything that should get included has to happen before this point.
-<% if @abrt_mail -%>
-# puppet 'abrt' module: using custom mail subjects
-EVENT=post-create
-    <%- if (@abrt_mailx_detailed_subject || @detailedmailsubject) -%>
-        if test -f executable; then
-          if test -f package; then
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable` [`cat package`]"
-          else
-            export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for `cat executable`"
-          fi
-        elif test -f package; then
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report for [`cat package`]"
-        else
-           export Mailx_Subject="<%= @fqdn %> [<%= @hostgroup %>] abrt crash report"
-        fi
-    <%- end -%>
-    <%- if @abrt_mailx_from   -%>
-        export Mailx_EmailFrom=<%= @abrt_mailx_from %>
-    <%- end -%>
-    <%- if @abrt_mailx_to     -%>
-        export Mailx_EmailTo=<%= @abrt_mailx_to %>
-    <%- end -%>
-    <%- if @abrt_mailx_binary -%>
-        export Mailx_SendBinaryData=<%= @abrt_mailx_binary %>
-    <%- end -%>
-        reporter-mailx --notify-only
-<% else -%>
-#  puppet 'abrt' module: mail sending was suppressed
-<% end -%>

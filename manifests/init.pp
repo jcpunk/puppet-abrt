@@ -13,13 +13,19 @@ class abrt (
     $abrt_mailx_from = false,
     $abrt_mailx_binary = false,
     $abrt_mailx_detailed_subject = false,
+    $abrt_mailx_send_duplicate = true,
     $abrt_sosreport = true,
     $abrt_backtrace = false    # or "full", or "simple"
   ) {
 
-  # Install Package
-  package { 'abrt':
-    ensure => present,
+  # Install Packages
+  ensure_packages(['abrt',
+                   'abrt-addon-ccpp',
+                   'abrt-addon-kerneloops',
+                   'abrt-addon-python',
+                  ])
+  if ($abrt_mail) {
+    ensure_packages(['libreport-plugin-mailx'])
   }
 
   # Have service running (or not)
@@ -27,13 +33,15 @@ class abrt (
     service { ['abrtd','abrt-oops','abrt-ccpp']:
       ensure => running,
       enable => true,
-      require => Package['abrt'],
+      require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
+    Service['abrtd'] -> Service['abrt-oops']
+    Service['abrtd'] -> Service['abrt-ccpp']
   } else {
     service { ['abrtd','abrt-oops','abrt-ccpp']:
       ensure => stopped,
       enable => false,
-      require => Package['abrt'],
+      require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
   }
 
@@ -44,6 +52,7 @@ class abrt (
     section => '',
     setting => 'DumpLocation',
     value   => $dumplocation,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -53,6 +62,7 @@ class abrt (
     section => '',
     setting => 'MaxCrashReportsSize',
     value   => $maxcrashreportssize,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -62,6 +72,7 @@ class abrt (
     section => '',
     setting => 'DeleteUploaded',
     value   => $deleteuploaded,
+    require => Package['abrt'],
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
@@ -109,6 +120,30 @@ class abrt (
     group   => root,
     content => template("${module_name}/abrt_event.conf.erb"),
     require => Package['abrt'],
+    notify => Service["abrtd"],
+  }
+
+  if ($abrt_mail) {
+    $libreport_mail_requirement = [Package['abrt'], Package['libreport-plugin-mailx']]
+  } else {
+    $libreport_mail_requirement = Package['abrt']
+  }
+
+  file { '/etc/libreport/events.d/mailx_event.conf':
+    ensure => present,
+    owner   => root,
+    group   => root,
+    content => template("${module_name}/mailx_event.conf.erb"),
+    require => $libreport_mail_requirement,
+    notify => Service["abrtd"],
+  }
+
+  file { '/etc/libreport/plugins/mailx.conf':
+    ensure => present,
+    owner   => root,
+    group   => root,
+    content => template("${module_name}/mailx.conf.erb"),
+    require => $libreport_mail_requirement,
     notify => Service["abrtd"],
   }
 }
