@@ -1,3 +1,4 @@
+# Class: abrt
 class abrt (
     $active = true,
     $abrt_mail = true,
@@ -20,10 +21,10 @@ class abrt (
 
   # Install Packages
   ensure_packages(['abrt',
-                   'abrt-addon-ccpp',
-                   'abrt-addon-kerneloops',
-                   'abrt-addon-python',
-                  ])
+    'abrt-addon-ccpp',
+    'abrt-addon-kerneloops',
+    'abrt-addon-python',
+    ])
   if ($abrt_mail) {
     ensure_packages(['libreport-plugin-mailx'])
   }
@@ -31,23 +32,23 @@ class abrt (
   # Have service running (or not)
   if ($active) {
     service { ['abrtd','abrt-oops','abrt-ccpp']:
-      ensure => running,
-      enable => true,
+      ensure  => running,
+      enable  => true,
       require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
     Service['abrtd'] -> Service['abrt-oops']
     Service['abrtd'] -> Service['abrt-ccpp']
   } else {
     service { ['abrtd','abrt-oops','abrt-ccpp']:
-      ensure => stopped,
-      enable => false,
+      ensure  => stopped,
+      enable  => false,
       require => [Package['abrt'], Package['abrt-addon-ccpp'], Package['abrt-addon-kerneloops']],
     }
   }
 
   # /etc/abrt/abrt.conf
   ## DumpLocation
-  ini_setting { "abrt_DumpLocation":
+  ini_setting { 'abrt_DumpLocation':
     path    => '/etc/abrt/abrt.conf',
     section => '',
     setting => 'DumpLocation',
@@ -57,7 +58,7 @@ class abrt (
   }
 
   ## MaxCrashReportsSize
-  ini_setting { "abrt_MaxCrashReportsSize":
+  ini_setting { 'abrt_MaxCrashReportsSize':
     path    => '/etc/abrt/abrt.conf',
     section => '',
     setting => 'MaxCrashReportsSize',
@@ -67,7 +68,7 @@ class abrt (
   }
 
   ## DeleteUploaded
-  ini_setting { "abrt_DeleteUploaded":
+  ini_setting { 'abrt_DeleteUploaded':
     path    => '/etc/abrt/abrt.conf',
     section => '',
     setting => 'DeleteUploaded',
@@ -78,7 +79,7 @@ class abrt (
 
   # abrt-action-save-package-data.conf
   ##
-  ini_setting { "abrt_OpenGPGCheck":
+  ini_setting { 'abrt_OpenGPGCheck':
     path    => '/etc/abrt/abrt-action-save-package-data.conf',
     section => '',
     setting => 'OpenGPGCheck',
@@ -87,7 +88,7 @@ class abrt (
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
-  ini_setting { "abrt_BlackList":
+  ini_setting { 'abrt_BlackList':
     path    => '/etc/abrt/abrt-action-save-package-data.conf',
     section => '',
     setting => 'BlackList',
@@ -96,7 +97,7 @@ class abrt (
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
-  ini_setting { "abrt_BlackListedPaths":
+  ini_setting { 'abrt_BlackListedPaths':
     path    => '/etc/abrt/abrt-action-save-package-data.conf',
     section => '',
     setting => 'BlackListedPaths',
@@ -105,7 +106,7 @@ class abrt (
     notify  => [Service['abrtd'], Service['abrt-oops'], Service['abrt-ccpp']]
   }
 
-  ini_setting { "abrt_ProcessUnpackaged":
+  ini_setting { 'abrt_ProcessUnpackaged':
     path    => '/etc/abrt/abrt-action-save-package-data.conf',
     section => '',
     setting => 'ProcessUnpackaged',
@@ -115,12 +116,12 @@ class abrt (
   }
 
   file { '/etc/libreport/events.d/abrt_event.conf':
-    ensure => present,
+    ensure  => present,
     owner   => root,
     group   => root,
     content => template("${module_name}/abrt_event.conf.erb"),
     require => Package['abrt'],
-    notify => Service["abrtd"],
+    notify  => Service['abrtd'],
   }
 
   if ($abrt_mail) {
@@ -130,20 +131,20 @@ class abrt (
   }
 
   file { '/etc/libreport/events.d/mailx_event.conf':
-    ensure => present,
+    ensure  => present,
     owner   => root,
     group   => root,
     content => template("${module_name}/mailx_event.conf.erb"),
     require => $libreport_mail_requirement,
-    notify => Service["abrtd"],
+    notify  => Service['abrtd'],
   }
 
   file { '/etc/libreport/plugins/mailx.conf':
-    ensure => present,
+    ensure  => present,
     owner   => root,
     group   => root,
     content => template("${module_name}/mailx.conf.erb"),
     require => $libreport_mail_requirement,
-    notify => Service["abrtd"],
+    notify  => Service['abrtd'],
   }
 }
