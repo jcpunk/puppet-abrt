@@ -1,4 +1,9 @@
-2014-04-02 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.2
+2015-04-15 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.3
+ * Code style fixes (based on puppet lint)
+ * Better class documentation
+ * Metadata fixes
+
+2015-04-02 Vincent Brillault <vincent.brillault@cern.ch> - 0.2.2
  * Add missing package requirements
  * Various fixes on extended mail subject
  * Update metada files

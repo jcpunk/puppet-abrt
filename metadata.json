@@ -1,6 +1,6 @@
 {
   "name": "CERNOps-abrt",
-  "version": "0.2.2",
+  "version": "0.2.3",
   "author": "CERNOps",
   "license": "GPL-3.0",
   "summary": "Configuring abrt (Daemon monitoring crashes)",
