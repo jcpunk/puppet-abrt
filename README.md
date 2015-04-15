@@ -1,3 +1,5 @@
+[![Puppet Forge](http://img.shields.io/puppetforge/v/CERNOps/abrt.svg)](https://forge.puppetlabs.com/CERNOps/abrt)
+[![Build Status](https://travis-ci.org/cernops/puppet-abrt.svg?branch=master)](https://travis-ci.org/cernops/puppet-abrt)
 ## abrt module
 
 This is the abrt module.
