@@ -4,7 +4,6 @@
   "name": "CERNOps-abrt",
   "project_page": "https://github.com/cernops/puppet-abrt",
   "summary": "Configuring abrt (Daemon monitoring crashes)",
-  "description": "Configuring abrt (Daemon monitoring crashes)",
   "dependencies": [
     {
       "version_requirement": ">= 3.2.0",
