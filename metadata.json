@@ -1,9 +1,10 @@
 {
-  "source": "https://github.com/cernops/puppet-abrt",
-  "version": "0.2.2",
   "name": "CERNOps-abrt",
-  "project_page": "https://github.com/cernops/puppet-abrt",
+  "version": "0.2.2",
+  "author": "CERNOps",
+  "license": "GPL-3.0",
   "summary": "Configuring abrt (Daemon monitoring crashes)",
+  "source": "https://github.com/cernops/puppet-abrt",
   "dependencies": [
     {
       "version_requirement": ">= 3.2.0",
@@ -14,7 +15,6 @@
       "name": "puppetlabs/inifile"
     }
   ],
-  "issues_url": "https://github.com/cernops/puppet-abrt/issues",
-  "author": "CERNOps",
-  "license": "GPL-3.0"
+  "project_page": "https://github.com/cernops/puppet-abrt",
+  "issues_url": "https://github.com/cernops/puppet-abrt/issues"
 }
