@@ -1,6 +1,7 @@
 script: "bundle exec rake validate && bundle exec rake lint && bundle exec rake spec SPEC_OPTS='--format documentation'"
 rnt validate specvm: 1.8.7
 notifications:
+  email: false
 matrix:
   fast_finish: true
   include:
@@ -16,3 +17,20 @@ matrix:
     env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
   - rvm: 2.0.0
     env: PUPPET_GEM_VERSION="~> 4.0"
+  - rvm: 2.1.5
+    env: PUPPET_GEM_VERSION="~> 3.0"
+  - rvm: 2.1.5
+    env: PUPPET_GEM_VERSION="~> 3.0" FUTURE_PARSER="yes"
+  - rvm: 2.1.5
+    env: PUPPET_GEM_VERSION="~> 4.0"
+deploy:
+  provider: puppetforge
+  user: CERNOps
+  password:
+    secure: "JbEq//jf3x4IrPiTvo5c/ihsXPDc5MY9LPiRL383ucHWJNDl6WFHuMFso5PppM9cxLr2WgXD2rWGz8fDvUNeeF2HzGwkOM5h2rlJmSYO4/oURnDuTffU5azQ0mPrzamw2drbaF/uYiDamGk0QqBe7cm+FtM+mtNgYO75akW0cIk="
+  on:
+    tags: true
+    all_branches: true
+    rvm: 2.0.0
+    condition: "$FUTURE_PARSER = yes"
+
