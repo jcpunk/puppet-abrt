@@ -53,3 +53,12 @@ Other variables allow to configure libreport:
 - **abrt_mailx_send_duplicate**: Send notification for duplicated events ([true]/false)
 - **abrt_sosreport**: Generate sosreport ([true]/false)
 - **abrt_backtrace**: Control backtrace generation, requires gdb ([false]/full/simple)
+- **abrt_ureport**: Control use of the ureport plugin
+- **abrt_ureport_url**: ureport URL
+- **abrt_ureport_ssl_verify**: Set to true to validate the ureport_url CA
+- **abrt_ureport_contact_email**: If defined, adds an email for followup on generated reports
+- **abrt_ureport_authdata**: Set to true to add ureport AuthData
+- **abrt_ureport_authdata_items**: Items to add to ureport AuthData
+- **abrt_ureport_ssl_clientauth**: If SSL client authentication is used, how do we find it?
+- **abrt_ureport_http_auth**: If HTTP basic authentication is used, what is it?
+

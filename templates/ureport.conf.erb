@@ -1,0 +1,27 @@
+# File managed by Puppet, modifications will be overidden!
+
+<% if @abrt_ureport -%>
+URL = <%= @abrt_ureport_url %>
+<% if @abrt_ureport_ssl_verify -%>
+SSLVerify = yes
+<% else -%>
+SSLVerify = no
+<% end -%>
+<% if @abrt_ureport_contact_email -%>
+ContactEmail = <%= @abrt_ureport_contact_email %>
+<% end -%>
+<% if @abrt_ureport_authdata -%>
+IncludeAuthData = yes
+<% end -%>
+AuthDataItems = <%= @abrt_ureport_authdata_items.join(', ') %>
+<% if @abrt_ureport_ssl_clientauth -%>
+SSLClientAuth = <%= @abrt_ureport_ssl_clientauth %>
+<% end -%>
+<% if @abrt_ureport_http_auth -%>
+HTTPAuth = <%= @abrt_ureport_http_auth %>
+<% end -%>
+<% else -%>
+
+# abrt_ureport parameter is 'false', nothing to do here
+
+<% end -%>

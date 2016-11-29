@@ -92,6 +92,33 @@
 #    - If set to simple, gdb will be used to generate a backtrace
 #    - If set to full, abrt-action-generate-backtrace will be used to generate a backtrace
 #
+# [*abrt_ureport*]
+#   Boolean controling the email notifications.
+#   If set to true (not default), the ureport plugin will activate
+#
+# [*abrt_ureport_url*]
+#   URL to send reports
+#
+# [*abrt_ureport_ssl_verify*]
+#   Boolean controling the verification of SSL certificates
+#   If set to true (not default), the ureport plugin will require a valid CA
+#
+# [*abrt_ureport_contact_email*]
+#   Email address to contact with additional questions
+#   Default is the same as $abrt_mailx_from
+#
+# [*abrt_ureport_authdata*]
+#   Boolean to determine if we include AuthData items
+#
+# [*abrt_ureport_authdata_items*]
+#   Array of AuthData items to include
+#
+# [*abrt_ureport_ssl_clientauth*]
+#   If SSL client authentication is used, how do we find it?
+#
+# [*abrt_ureport_http_auth*]
+#   If HTTP basic authentication is used, what is it?
+#
 # === Examples
 #
 # Installing and running abrt with mail optimisations for all crashes, except duplicates:
@@ -123,6 +150,14 @@ class abrt (
     $abrt_mailx_send_duplicate = true,
     $abrt_sosreport = true,
     $abrt_backtrace = false    # or "full", or "simple"
+    $abrt_ureport = false,
+    $abrt_ureport_url = '',
+    $abrt_ureport_ssl_verify = false,
+    $abrt_ureport_contact_email = $abrt_mailx_from,
+    $abrt_ureport_authdata = false,
+    $abrt_ureport_authdata_items = ['hostname', 'machineid'],
+    $abrt_ureport_ssl_clientauth = false,
+    $abrt_ureport_http_auth = false,
   ) {
 
   # Install Packages
@@ -133,6 +168,9 @@ class abrt (
     ])
   if ($abrt_mail) {
     ensure_packages(['libreport-plugin-mailx'])
+  }
+  if ($abrt_mail) {
+    ensure_packages(['libreport-plugin-ureport'])
   }
 
   # Have service running (or not)
@@ -251,6 +289,20 @@ class abrt (
     group   => root,
     content => template("${module_name}/mailx.conf.erb"),
     require => $libreport_mail_requirement,
+    notify  => Service['abrtd'],
+  }
+
+  if ($abrt_ureport) {
+    $libreport_ureport_requirement = [Package['abrt'], Package['libreport-plugin-ureport']]
+  } else {
+    $libreport_ureport_requirement = Package['abrt']
+  }
+  file {'/etc/libreport/plugins/ureport.conf':
+    ensure  => present,
+    owner   => root,
+    group   => root,
+    content => template("${module_name}/ureport.conf.erb"),
+    require => $libreport_ureport_requirement,
     notify  => Service['abrtd'],
   }
 }
